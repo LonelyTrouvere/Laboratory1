@@ -7,14 +7,21 @@ public:
     int x;
     int y;
     Node* next;
-private:
-     Node();
-     Node(int x, int y);
+    Node();
+    Node(int x, int y);
 };
 
 class LinkedList {
 private:
     Node* head;
-    int size;
+    int Size;
+public:
+    LinkedList();
+    void push_back(int x, int y);
+    void push_front(int x, int y);
+    void pop_back();
+    void pop_front();
+    void printList();
+    int size();
 };
 
