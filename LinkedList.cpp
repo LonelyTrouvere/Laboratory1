@@ -96,8 +96,23 @@ void LinkedList::printList() {
     }
 }
 
-
+void LinkedList::clear(){
+    while(head)
+    {
+        Node *temp = head;
+        head = head->next;
+        delete temp;
+    }
+    Size = 0;
+}
 
 int LinkedList::size(){
     return Size;
+}
+
+bool LinkedList::empty() {
+    if (head)
+        return false;
+    else
+        return true;
 }

@@ -21,7 +21,9 @@ public:
     void push_front(int x, int y);
     void pop_back();
     void pop_front();
+    void clear();
     void printList();
     int size();
+    bool empty();
 };
 
