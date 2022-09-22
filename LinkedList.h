@@ -24,6 +24,8 @@ public:
     void clear();
     void printList();
     int size();
+    Node *front();
     bool empty();
 };
 
+void merge_sort(LinkedList list);

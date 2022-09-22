@@ -110,9 +110,35 @@ int LinkedList::size(){
     return Size;
 }
 
+Node * LinkedList::front() {
+    return head;
+}
+
 bool LinkedList::empty() {
     if (head)
         return false;
     else
         return true;
+}
+
+///////АЛГОРИТМИ СОРТУВАННЯ
+
+void merge_sort(LinkedList list) {
+    if (list.size() == 0 || list.size() == 1)
+        return;
+
+    int mid = list.size()/2 + 1;
+    Node *a = list.front();
+    Node *temp = list.front();
+    Node *b;
+
+    for (int i = 1; i < mid; i++)
+    {
+        if (i == --mid) {
+            b = temp->next;
+            temp->next = nullptr;
+        }
+        temp = temp->next;
+    }
+
 }
