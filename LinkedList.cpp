@@ -17,6 +17,11 @@ LinkedList::LinkedList() {
     Size = 0;
 }
 
+LinkedList::LinkedList(Node *h, int s) {
+    head = h;
+    Size = s;
+}
+
 void LinkedList::push_back(int x, int y)
 {
     Node *newNode = new Node(x, y);
@@ -94,6 +99,7 @@ void LinkedList::printList() {
         std::cout<<current->x<<' '<<current->y<<std::endl;
         current = current->next;
     }
+   // system("pause");
 }
 
 void LinkedList::clear(){
@@ -121,7 +127,58 @@ bool LinkedList::empty() {
         return true;
 }
 
-///////АЛГОРИТМИ СОРТУВАННЯ
+////////////////АЛГОРИТМИ СОРТУВАННЯ
+
+/// merge sort
+LinkedList merge(LinkedList a, LinkedList b){
+
+    a.printList();
+    b.printList();
+
+    Node *ahead = a.front();
+    Node *bhead = b.front();
+    LinkedList c;
+
+    while (ahead && bhead)
+    {
+        if (ahead->x == bhead->x)
+        {
+            if (ahead->y < bhead->y) {
+                c.push_back(ahead->x, ahead->y);
+                ahead = ahead->next;
+            }
+            else {
+                c.push_back(bhead->x, bhead->y);
+                bhead = bhead->next;
+            }
+        }
+        else
+        {
+            if (ahead->x < bhead->x) {
+                c.push_back(ahead->x, ahead->y);
+                ahead = ahead->next;
+            }
+            else {
+                c.push_back(bhead->x, bhead->y);
+                bhead = bhead->next;
+            }
+        }
+    }
+
+    while (ahead)
+    {
+        c.push_back(ahead->x, ahead->y);
+        ahead = ahead->next;
+    }
+
+    while(bhead)
+    {
+        c.push_back(bhead->x, bhead->y);
+        bhead = bhead->next;
+    }
+    //c.printList();
+    return c;
+}
 
 void merge_sort(LinkedList list) {
     if (list.size() == 0 || list.size() == 1)
@@ -134,11 +191,20 @@ void merge_sort(LinkedList list) {
 
     for (int i = 1; i < mid; i++)
     {
-        if (i == --mid) {
+        if (i == mid-1) {
             b = temp->next;
             temp->next = nullptr;
         }
         temp = temp->next;
     }
 
+    /*LinkedList t = LinkedList(a, list.size()/2);
+    t.printList();
+    printf("\n\n");*/
+
+    merge_sort(LinkedList(a, list.size()/2));
+    merge_sort(LinkedList(b, list.size()/2 + list.size()%2));
+
+    list.clear();
+    list = merge(LinkedList(a, list.size()/2), LinkedList(b, list.size()/2 + list.size()%2));
 }

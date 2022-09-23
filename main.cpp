@@ -5,11 +5,10 @@ int main() {
 
 LinkedList list;
 
-list.push_front(1,5);
+list.push_back(1,5);
+list.push_back(5,1);
 list.push_back(3,3);
-list.push_front(5,1);
-list.clear();
+list.push_back(4, 8);
 
- std::cout<<list.size();
-
+    merge_sort(list);
 }

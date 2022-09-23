@@ -17,6 +17,7 @@ private:
     int Size;
 public:
     LinkedList();
+    LinkedList(Node *h, int s);
     void push_back(int x, int y);
     void push_front(int x, int y);
     void pop_back();
@@ -29,3 +30,4 @@ public:
 };
 
 void merge_sort(LinkedList list);
+LinkedList merge(LinkedList a, LinkedList b);
