@@ -10,5 +10,6 @@ list.push_back(5,1);
 list.push_back(3,3);
 list.push_back(4, 8);
 
-    merge_sort(list);
+    merge_sort(&list);
+    list.printList();
 }

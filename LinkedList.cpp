@@ -130,61 +130,10 @@ bool LinkedList::empty() {
 ////////////////АЛГОРИТМИ СОРТУВАННЯ
 
 /// merge sort
-LinkedList merge(Node *a, Node *b){
 
-    while (a)
-    {
-        printf("%d %d\n", a->x, a->y);
-        a = a->next;
-    }
-    //b.printList();
 
-    /*Node *ahead = a.front();
-    Node *bhead = b.front();
-    LinkedList c;
-
-    while (ahead && bhead)
-    {
-        if (ahead->x == bhead->x)
-        {
-            if (ahead->y < bhead->y) {
-                c.push_back(ahead->x, ahead->y);
-                ahead = ahead->next;
-            }
-            else {
-                c.push_back(bhead->x, bhead->y);
-                bhead = bhead->next;
-            }
-        }
-        else
-        {
-            if (ahead->x < bhead->x) {
-                c.push_back(ahead->x, ahead->y);
-                ahead = ahead->next;
-            }
-            else {
-                c.push_back(bhead->x, bhead->y);
-                bhead = bhead->next;
-            }
-        }
-    }
-
-    while (ahead)
-    {
-        c.push_back(ahead->x, ahead->y);
-        ahead = ahead->next;
-    }
-
-    while(bhead)
-    {
-        c.push_back(bhead->x, bhead->y);
-        bhead = bhead->next;
-    }
-    //c.printList();
-    return c;*/
-}
-
-void merge_sort(LinkedList list) {
+void merge_sort(LinkedList *listref) {
+    LinkedList list = *(listref);
     if (list.size() == 0 || list.size() == 1)
         return;
 
@@ -204,18 +153,48 @@ void merge_sort(LinkedList list) {
 
     LinkedList lista = LinkedList(a, list.size()/2);
     LinkedList listb = LinkedList(b, list.size()/2 + list.size()%2);
-    /*LinkedList t = LinkedList(a, list.size()/2);
-    t.printList();
-    printf("\n\n");*/
 
-    /*lista.printList();
-    printf("\n");
-    listb.printList();
-    printf("\n");*/
 
-    merge_sort(lista);
-    merge_sort(listb);
+    merge_sort(&lista);
+    merge_sort(&listb);
 
     list.clear();
-    list = merge(a, b);
+
+    while (a && b)
+    {
+        if (a->x == b->x)
+        {
+            if (a->y < b->y) {
+                list.push_back(a->x, a->y);
+                a = a->next;
+            }
+            else {
+                list.push_back(b->x, b->y);
+                b = b->next;
+            }
+        }
+        else
+        {
+            if (a->x < b->x) {
+                list.push_back(a->x, a->y);
+                a = a->next;
+            }
+            else {
+                list.push_back(b->x, b->y);
+                b = b->next;
+            }
+        }
+    }
+
+    while (a)
+    {
+        list.push_back(a->x, a->y);
+        a = a->next;
+    }
+
+    while(b)
+    {
+        list.push_back(b->x, b->y);
+        b = b->next;
+    }
 }
