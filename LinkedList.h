@@ -29,5 +29,5 @@ public:
     bool empty();
 };
 
+LinkedList merge(Node *a, Node *b);
 void merge_sort(LinkedList list);
-LinkedList merge(LinkedList a, LinkedList b);

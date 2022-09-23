@@ -130,12 +130,16 @@ bool LinkedList::empty() {
 ////////////////АЛГОРИТМИ СОРТУВАННЯ
 
 /// merge sort
-LinkedList merge(LinkedList a, LinkedList b){
+LinkedList merge(Node *a, Node *b){
 
-    a.printList();
-    b.printList();
+    while (a)
+    {
+        printf("%d %d\n", a->x, a->y);
+        a = a->next;
+    }
+    //b.printList();
 
-    Node *ahead = a.front();
+    /*Node *ahead = a.front();
     Node *bhead = b.front();
     LinkedList c;
 
@@ -177,7 +181,7 @@ LinkedList merge(LinkedList a, LinkedList b){
         bhead = bhead->next;
     }
     //c.printList();
-    return c;
+    return c;*/
 }
 
 void merge_sort(LinkedList list) {
@@ -198,13 +202,20 @@ void merge_sort(LinkedList list) {
         temp = temp->next;
     }
 
+    LinkedList lista = LinkedList(a, list.size()/2);
+    LinkedList listb = LinkedList(b, list.size()/2 + list.size()%2);
     /*LinkedList t = LinkedList(a, list.size()/2);
     t.printList();
     printf("\n\n");*/
 
-    merge_sort(LinkedList(a, list.size()/2));
-    merge_sort(LinkedList(b, list.size()/2 + list.size()%2));
+    /*lista.printList();
+    printf("\n");
+    listb.printList();
+    printf("\n");*/
+
+    merge_sort(lista);
+    merge_sort(listb);
 
     list.clear();
-    list = merge(LinkedList(a, list.size()/2), LinkedList(b, list.size()/2 + list.size()%2));
+    list = merge(a, b);
 }
