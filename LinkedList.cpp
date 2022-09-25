@@ -22,11 +22,6 @@ LinkedList::LinkedList() {
     Size = 0;
 }
 
-LinkedList::LinkedList(Node *h, int s) {
-    head = h;
-    Size = s;
-}
-
 void LinkedList::push_back(int x, int y)
 {
     Node *newNode = new Node(x, y);
@@ -134,7 +129,7 @@ bool LinkedList::empty() {
 
 ////////////////АЛГОРИТМИ СОРТУВАННЯ
 
-/// merge sort
+/// MERGE SORT
 
 void LinkedList::merge_sort() {
     head = merge_sort(head);
@@ -232,4 +227,56 @@ Node *LinkedList::merge_sort(Node *headr) {
 
        headr = merger(left, right);
        return headr;
+}
+
+/// INSERTION SORT
+
+void LinkedList::insertion_sort() {
+    head = insertion_sort(head);
+}
+
+Node * LinkedList::insertion_sort(Node *headr)
+{
+    Node *ans = new Node;
+    Node *curr = headr;
+
+    while (curr)
+    {
+        Node *ins = new Node(curr->x, curr->y);
+        Node *temp = ans->next;
+        Node *prev_to_temp = nullptr;
+
+        if (!temp)
+        {
+            ans->next = ins;
+        }
+        else
+        {
+            while(temp && temp->x < ins->x)
+            {
+                prev_to_temp = temp;
+                temp = temp->next;
+            }
+
+            while(temp && temp->x == ins->x && temp->y < ins->y)
+            {
+                prev_to_temp = temp;
+                temp = temp->next;
+            }
+
+            if (prev_to_temp) {
+                prev_to_temp->next = ins;
+                ins->next = temp;
+            }
+            else
+            {
+                ans->next = ins;
+                ins->next = temp;
+            }
+        }
+        curr = curr->next;
+    }
+
+    return ans->next;
+
 }

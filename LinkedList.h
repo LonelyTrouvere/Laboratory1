@@ -19,7 +19,8 @@ private:
     Node *merge_sort(Node *headr);
     Node *merger(Node *left, Node *right);
     Node *find_mid(Node *headr);
-    ///////////////////////////////////////////
+    ///////////// INSERTION SORT //////////////
+    Node *insertion_sort(Node *headr);
 public:
     LinkedList();
     LinkedList(Node *h, int s);
@@ -32,5 +33,7 @@ public:
     int size();
     Node *front();
     bool empty();
+
     void merge_sort();
+    void insertion_sort();
 };
