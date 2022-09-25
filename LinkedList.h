@@ -30,4 +30,4 @@ public:
 };
 
 LinkedList merge(Node **aref, Node **bref);
-void merge_sort(LinkedList *listref);
+Node *merge_sort(Node *head);

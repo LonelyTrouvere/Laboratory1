@@ -5,6 +5,11 @@
 #include "LinkedList.h"
 #include <iostream>
 
+Node::Node()
+{
+    this->next = nullptr;
+}
+
 Node::Node(int x, int y)
 {
     this->x = x;
@@ -131,70 +136,96 @@ bool LinkedList::empty() {
 
 /// merge sort
 
+Node *find_mid(Node *head)
+{
+        Node *slow = head;
+        Node *fast = head->next;
 
-void merge_sort(LinkedList *listref) {
-    LinkedList list = *(listref);
-    if (list.size() == 0 || list.size() == 1)
-        return;
-
-    int mid = list.size()/2 + 1;
-    Node *a = list.front();
-    Node *temp = list.front();
-    Node *b;
-
-    for (int i = 1; i < mid; i++)
-    {
-        if (i == mid-1) {
-            b = temp->next;
-            temp->next = nullptr;
-        }
-        temp = temp->next;
-    }
-
-    LinkedList lista = LinkedList(a, list.size()/2);
-    LinkedList listb = LinkedList(b, list.size()/2 + list.size()%2);
-
-
-    merge_sort(&lista);
-    merge_sort(&listb);
-
-    list.clear();
-
-    while (a && b)
-    {
-        if (a->x == b->x)
+        while(fast != nullptr && fast->next != nullptr)
         {
-            if (a->y < b->y) {
-                list.push_back(a->x, a->y);
-                a = a->next;
+            slow = slow->next;
+            fast = fast->next;
+            fast = fast->next;
+        }
+
+    return  slow;
+}
+
+Node *merger(Node *left, Node *right)
+{
+    if (!left)
+        return right;
+    if(!right)
+        return left;
+
+    Node *newHead = new Node;
+    Node *temp = newHead;
+
+    while(left && right)
+    {
+        if (left->x == right->x)
+        {
+            if (left->y < right->y)
+            {
+                temp->next = left;
+                left = left->next;
             }
-            else {
-                list.push_back(b->x, b->y);
-                b = b->next;
+            else
+            {
+                temp->next = right;
+                right = right->next;
             }
         }
         else
         {
-            if (a->x < b->x) {
-                list.push_back(a->x, a->y);
-                a = a->next;
+            if (left->x < right->x)
+            {
+                temp->next = left;
+                left = left->next;
             }
-            else {
-                list.push_back(b->x, b->y);
-                b = b->next;
+            else
+            {
+                temp->next = right;
+                right = right->next;
             }
         }
+
+        temp = temp->next;
     }
 
-    while (a)
+    while(left)
     {
-        list.push_back(a->x, a->y);
-        a = a->next;
+        temp->next = left;
+        left = left->next;
+        temp = temp->next;
     }
 
-    while(b)
+    while(right)
     {
-        list.push_back(b->x, b->y);
-        b = b->next;
+        temp->next = right;
+        right = right->next;
+        temp = temp->next;
     }
+
+    return newHead->next;
+
+}
+
+Node *merge_sort(Node *head) {
+
+
+       if (!head || !head->next)
+           return head;
+
+       Node *left = head;
+       Node *mid = find_mid(head);
+       Node *right = mid->next;
+
+       mid->next = nullptr;
+
+       left = merge_sort(left);
+       right = merge_sort(right);
+
+       head = merger(left, right);
+       return head;
 }
