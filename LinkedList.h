@@ -15,6 +15,11 @@ class LinkedList {
 private:
     Node* head;
     int Size;
+    ////////////// MERGE SORT//////////////////
+    Node *merge_sort(Node *headr);
+    Node *merger(Node *left, Node *right);
+    Node *find_mid(Node *headr);
+    ///////////////////////////////////////////
 public:
     LinkedList();
     LinkedList(Node *h, int s);
@@ -27,7 +32,5 @@ public:
     int size();
     Node *front();
     bool empty();
+    void merge_sort();
 };
-
-LinkedList merge(Node **aref, Node **bref);
-Node *merge_sort(Node *head);

@@ -136,10 +136,14 @@ bool LinkedList::empty() {
 
 /// merge sort
 
-Node *find_mid(Node *head)
+void LinkedList::merge_sort() {
+    head = merge_sort(head);
+}
+
+Node *LinkedList::find_mid(Node *headr)
 {
-        Node *slow = head;
-        Node *fast = head->next;
+        Node *slow = headr;
+        Node *fast = headr->next;
 
         while(fast != nullptr && fast->next != nullptr)
         {
@@ -151,7 +155,7 @@ Node *find_mid(Node *head)
     return  slow;
 }
 
-Node *merger(Node *left, Node *right)
+Node *LinkedList::merger(Node *left, Node *right)
 {
     if (!left)
         return right;
@@ -211,14 +215,14 @@ Node *merger(Node *left, Node *right)
 
 }
 
-Node *merge_sort(Node *head) {
+Node *LinkedList::merge_sort(Node *headr) {
 
 
-       if (!head || !head->next)
-           return head;
+       if (!headr || !headr->next)
+           return headr;
 
-       Node *left = head;
-       Node *mid = find_mid(head);
+       Node *left = headr;
+       Node *mid = find_mid(headr);
        Node *right = mid->next;
 
        mid->next = nullptr;
@@ -226,6 +230,6 @@ Node *merge_sort(Node *head) {
        left = merge_sort(left);
        right = merge_sort(right);
 
-       head = merger(left, right);
-       return head;
+       headr = merger(left, right);
+       return headr;
 }
