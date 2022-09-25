@@ -23,11 +23,11 @@ private:
     Node *insertion_sort(Node *headr);
 public:
     LinkedList();
-    LinkedList(Node *h, int s);
     void push_back(int x, int y);
     void push_front(int x, int y);
     void pop_back();
     void pop_front();
+    void swap(int a, int b);
     void clear();
     void printList();
     int size();

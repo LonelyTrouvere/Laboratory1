@@ -87,6 +87,49 @@ void LinkedList::pop_front() {
     Size--;
 }
 
+void LinkedList::swap(int a, int b){
+    if (a>b)
+    {
+        int c = a;
+        a = b;
+        b = a;
+    }
+
+    if (b > Size)
+        return;
+    a--; b--;
+
+    Node *find1 = head, *find2 = head;
+    Node *prev1 = nullptr, *prev2 = nullptr;
+
+    while(a--)
+    {
+        prev1 = find1;
+        find1 = find1->next;
+    }
+    while(b--)
+    {
+        prev2 = find2;
+        find2 = find2->next;
+    }
+
+   Node *temp = find1->next;
+    prev2->next = find1;
+    find1->next = find2->next;
+
+    if (!prev1)
+    {
+        find2->next = temp;
+        head = find2;
+    }
+    else
+    {
+        find2->next = temp;
+        prev1->next = find2;
+    }
+
+}
+
 void LinkedList::printList() {
     if (!head)
     {
@@ -99,7 +142,6 @@ void LinkedList::printList() {
         std::cout<<current->x<<' '<<current->y<<std::endl;
         current = current->next;
     }
-   // system("pause");
 }
 
 void LinkedList::clear(){

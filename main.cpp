@@ -10,7 +10,6 @@ list.push_back(3,3);
 list.push_back(1,5);
 list.push_back(4, 8);
 
-
-    list.insertion_sort();
+    list.swap(1,4);
     list.printList();
 }
