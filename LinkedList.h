@@ -15,12 +15,15 @@ class LinkedList {
 private:
     Node* head;
     int Size;
-    ////////////// MERGE SORT//////////////////
+    /////////////  MERGE SORT   //////////////////
     Node *merge_sort(Node *headr);
     Node *merger(Node *left, Node *right);
     Node *find_mid(Node *headr);
-    ///////////// INSERTION SORT //////////////
+    ////////////  INSERTION SORT  ///////////////
     Node *insertion_sort(Node *headr);
+    ///////////   QUICK SORT    /////////////////
+    Node *quick_sort(Node *headr);
+    Node *partition(Node *headr);
 public:
     LinkedList();
     void push_back(int x, int y);
@@ -36,4 +39,6 @@ public:
 
     void merge_sort();
     void insertion_sort();
+    void quick_sort();
 };
+

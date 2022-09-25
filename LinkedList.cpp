@@ -95,6 +95,9 @@ void LinkedList::swap(int a, int b){
         b = a;
     }
 
+    if (a == b)
+        return;
+
     if (b > Size)
         return;
     a--; b--;
@@ -124,6 +127,9 @@ void LinkedList::swap(int a, int b){
     }
     else
     {
+        if (temp == find2)
+            find2->next = find1;
+        else
         find2->next = temp;
         prev1->next = find2;
     }
@@ -320,5 +326,76 @@ Node * LinkedList::insertion_sort(Node *headr)
     }
 
     return ans->next;
+
+}
+
+/// QUICK SORT
+
+void LinkedList::quick_sort() {
+    head = quick_sort(head);
+}
+
+Node *LinkedList::partition(Node *headr){
+    Node *pivot = headr;
+    while (pivot->next)
+        pivot = pivot->next;
+
+    Node *lesser = headr;
+    Node *higher = headr;
+    int l = 1, h = 1;
+
+    while(lesser->next)
+    {
+        if (lesser->x == pivot->x)
+        {
+            if (lesser->y > pivot->y)
+            {
+                lesser = lesser->next;
+                l++;
+            }
+            else
+            {
+                this->swap(l, h);
+                headr = head;
+                Node *temp = lesser;
+                lesser = higher;
+                lesser->next = higher->next;
+                higher = temp;
+                higher->next = temp->next;
+                higher = higher->next;
+                lesser = lesser->next;
+            }
+        }
+
+        if (lesser->x > pivot->x)
+            {
+                lesser = lesser->next;
+                l++;
+            }
+        else
+            {
+                this->swap(l, h);
+                headr = head;
+                Node *temp = lesser;
+                lesser = higher;
+                lesser->next = higher->next;
+                higher = temp;
+                higher->next = temp->next;
+                higher = higher->next;
+                lesser = lesser->next;
+                l++; h++;
+            }
+        }
+    this->swap(l, h);
+    headr = head;
+    return head;
+}
+
+Node *LinkedList::quick_sort(Node *headr) {
+    if (!headr || !headr->next)
+        return headr;
+
+    headr = partition(headr);
+    return headr;
 
 }
