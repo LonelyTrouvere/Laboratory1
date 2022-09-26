@@ -92,7 +92,7 @@ void LinkedList::swap(int a, int b){
     {
         int c = a;
         a = b;
-        b = a;
+        b = c;
     }
 
     if (a == b)
@@ -122,6 +122,9 @@ void LinkedList::swap(int a, int b){
 
     if (!prev1)
     {
+        if (temp == find2)
+            find2->next = find1;
+        else
         find2->next = temp;
         head = find2;
     }
@@ -133,7 +136,6 @@ void LinkedList::swap(int a, int b){
         find2->next = temp;
         prev1->next = find2;
     }
-
 }
 
 void LinkedList::printList() {
@@ -335,6 +337,45 @@ void LinkedList::quick_sort() {
     head = quick_sort(head);
 }
 
+Node *LinkedList::swap(Node *headr, Node *first, Node *second)
+{
+    if (!headr || !headr->next || first == second)
+        return headr;
+
+    Node *prev1 = headr;
+    Node *prev2 = headr;
+
+    if (first == headr)
+        prev1 = nullptr;
+    else
+    while(prev1->next != first)
+        prev1 = prev1->next;
+    while(prev2->next != second)
+        prev2 = prev2->next;
+
+    Node *temp = first->next;
+    prev2->next = first;
+    first->next = second->next;
+
+    if (!prev1)
+    {
+        if (temp == second)
+            second->next = first;
+        else
+            second->next = temp;
+        headr = second;
+    } else
+    {
+        if (temp == second)
+            second->next = first;
+        else
+            second->next = temp;
+        prev1->next = second;
+    }
+    Node *t = headr;
+    return headr;
+}
+
 Node *LinkedList::partition(Node *headr){
     Node *pivot = headr;
     while (pivot->next)
@@ -342,7 +383,6 @@ Node *LinkedList::partition(Node *headr){
 
     Node *lesser = headr;
     Node *higher = headr;
-    int l = 1, h = 1;
 
     while(lesser->next)
     {
@@ -351,17 +391,17 @@ Node *LinkedList::partition(Node *headr){
             if (lesser->y > pivot->y)
             {
                 lesser = lesser->next;
-                l++;
             }
             else
             {
-                this->swap(l, h);
-                headr = head;
+                headr = swap(headr, higher, lesser);
+
                 Node *temp = lesser;
                 lesser = higher;
                 lesser->next = higher->next;
                 higher = temp;
                 higher->next = temp->next;
+
                 higher = higher->next;
                 lesser = lesser->next;
             }
@@ -370,32 +410,59 @@ Node *LinkedList::partition(Node *headr){
         if (lesser->x > pivot->x)
             {
                 lesser = lesser->next;
-                l++;
             }
         else
             {
-                this->swap(l, h);
-                headr = head;
+                headr = swap(headr, higher, lesser);
+
                 Node *temp = lesser;
                 lesser = higher;
                 lesser->next = higher->next;
                 higher = temp;
                 higher->next = temp->next;
+
                 higher = higher->next;
                 lesser = lesser->next;
-                l++; h++;
             }
         }
-    this->swap(l, h);
-    headr = head;
-    return head;
+
+    headr = swap(headr, higher, lesser);
+    return headr;
 }
 
 Node *LinkedList::quick_sort(Node *headr) {
     if (!headr || !headr->next)
         return headr;
 
+    Node *pivot = headr;
+    while (pivot->next)
+        pivot = pivot->next;
+
     headr = partition(headr);
+
+    Node *temp = headr;
+    while (temp->next != pivot && temp != pivot)
+        temp = temp->next;
+    if (pivot != temp)
+    pivot->next = temp->next->next;
+    else {
+        pivot->next = temp->next;
+    }
+
+    Node *left = headr;
+    Node *right = pivot->next;
+    temp->next = nullptr;
+
+    left = quick_sort(left);
+    right = quick_sort(right);
+
+    Node *temp2 = left;
+    while(temp2->next)
+        temp2 = temp2->next;
+    temp2->next = pivot;
+    pivot->next = right;
+
+    headr = left;
     return headr;
 
 }

@@ -24,6 +24,7 @@ private:
     ///////////   QUICK SORT    /////////////////
     Node *quick_sort(Node *headr);
     Node *partition(Node *headr);
+    Node *swap(Node *headr, Node *first, Node *second);
 public:
     LinkedList();
     void push_back(int x, int y);
