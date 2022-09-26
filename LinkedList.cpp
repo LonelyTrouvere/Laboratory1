@@ -405,8 +405,7 @@ Node *LinkedList::partition(Node *headr){
                 higher = higher->next;
                 lesser = lesser->next;
             }
-        }
-
+        }else
         if (lesser->x > pivot->x)
             {
                 lesser = lesser->next;
@@ -424,7 +423,7 @@ Node *LinkedList::partition(Node *headr){
                 higher = higher->next;
                 lesser = lesser->next;
             }
-        }
+    }
 
     headr = swap(headr, higher, lesser);
     return headr;
@@ -465,4 +464,40 @@ Node *LinkedList::quick_sort(Node *headr) {
     headr = left;
     return headr;
 
+}
+
+/// BUBBLE SORT
+void LinkedList::bubble_sort() {
+    head = bubble_sort(head);
+}
+
+Node *LinkedList::bubble_sort(Node *headr) {
+    Node *curr = headr;
+    Node *end = nullptr;
+
+    while(end != headr)
+    {
+        while(curr->next != end)
+        {
+            if (curr->x == curr->next->x)
+            {
+                if (curr->y > curr->next->y)
+                {
+                    headr = swap(headr, curr, curr->next);
+                }
+                else
+                curr = curr->next;
+            }
+            else
+            {
+                if (curr->x > curr->next->x)
+                    headr = swap(headr, curr, curr->next);
+                else
+                curr = curr->next;
+            }
+        }
+        end = curr;
+        curr = headr;
+    }
+    return headr;
 }

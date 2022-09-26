@@ -25,6 +25,8 @@ private:
     Node *quick_sort(Node *headr);
     Node *partition(Node *headr);
     Node *swap(Node *headr, Node *first, Node *second);
+    //////////   BUBBLE SORT   //////////////////
+    Node *bubble_sort(Node *headr);
 public:
     LinkedList();
     void push_back(int x, int y);
@@ -41,5 +43,6 @@ public:
     void merge_sort();
     void insertion_sort();
     void quick_sort();
+    void bubble_sort();
 };
 
