@@ -2,48 +2,8 @@
 // Created by 1 on 22.09.2022.
 //
 
-#include "LinkedList.h"
+/*/#include "LinkedList.h"
 #include <iostream>
-
-Node::Node()
-{
-    this->next = nullptr;
-}
-
-Node::Node(int x, int y)
-{
-    this->x = x;
-    this->y = y;
-    this->next = nullptr;
-}
-
-LinkedList::LinkedList() {
-    head = nullptr;
-    Size = 0;
-}
-
-void LinkedList::push_back(int x, int y)
-{
-    Node *newNode = new Node(x, y);
-
-    if (!head)
-    {
-        head = newNode;
-    }
-    else
-    {
-        Node *current = head;
-
-        while(current->next)
-        {
-            current = current->next;
-        }
-        current->next = newNode;
-
-    }
-
-    Size++;
-}
 
 void LinkedList::push_front(int x, int y) {
     Node *newNode = new Node(x,y);
@@ -500,4 +460,4 @@ Node *LinkedList::bubble_sort(Node *headr) {
         curr = headr;
     }
     return headr;
-}
+}*/

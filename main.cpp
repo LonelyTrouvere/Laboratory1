@@ -1,17 +1,18 @@
 #include <iostream>
+#include<string>
 #include "LinkedList.h"
 
 int main() {
 
-LinkedList list;
+LinkedList<std::string>list;
 
-    list.push_back(3,3);
-    list.push_back(0,0);
-    list.push_back(3,3);
-    list.push_back(0,1);
-    list.push_back(3, 3);
-    list.push_back(3,3);
+    list.push_front("char");
+    list.push_front("mf");
+    list.push_front("3");
+    list.push_front("bruh");
+    list.set("druh", 2);
+    list.printList();
+    list.clear();
 
-    list.quick_sort();
     list.printList();
 }
