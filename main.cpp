@@ -4,15 +4,14 @@
 
 int main() {
 
-LinkedList<std::string>list;
+LinkedList<int>list;
 
-    list.push_front("char");
-    list.push_front("mf");
-    list.push_front("3");
-    list.push_front("bruh");
-    list.set("druh", 2);
-    list.printList();
-    list.clear();
+    list.push_back(3);
+    list.push_back(1);
+    list.push_back(5);
+    list.push_back(0);
 
-    list.printList();
+    list.bubble_sort(&bigger);
+    list.print();
+
 }

@@ -1,6 +1,18 @@
 //
 // Created by 1 on 22.09.2022.
 //
+#include <functional>
+
+template <typename T>
+bool bigger (T a, T b)
+{
+    return a>b;
+}
+template <typename T>
+bool lesser(T a, T b)
+{
+    return a<b;
+}
 
 template <typename T>
 class LinkedList {
@@ -16,7 +28,29 @@ private:
     };
     Node* head;
     int Size;
-    Node *bubble_sort(Node *headr);
+
+private:
+    Node *bubble_sort(Node *headr, bool (*comparator)(T, T))
+    {
+        Node *curr = headr;
+        Node *end = nullptr;
+        int i = 1;
+
+        while (end!=head)
+        {
+            while(curr->next != end)
+            {
+                if (!comparator(curr->data, curr->next->data))
+                    swap(i, i+1);
+                curr = curr->next;
+                i++;
+            }
+            end = curr;
+            curr = headr;
+            i = 1;
+        }
+        return headr;
+    }
 
 public:
     LinkedList();
@@ -25,16 +59,16 @@ public:
     void pop_back();
     void pop_front();
     void set(T data, int i);
-    void swap();
+    void swap(int a, int b);
     void clear();
-    void printList();
+    void print();
     int size();
     bool empty();
 
     void merge_sort();
     void insertion_sort();
     void quick_sort();
-    void bubble_sort();
+    void bubble_sort(bool (*comparator)(T, T));
 };
 
 template <typename T>
@@ -65,7 +99,7 @@ void LinkedList<T>::push_back(T data) {
 };
 
 template<typename T>
-void LinkedList<T>::printList() {
+void LinkedList<T>::print() {
 
     if (!head)
         return;
@@ -135,6 +169,28 @@ void LinkedList<T>::set(T data, int i) {
 }
 
 template<typename T>
+void LinkedList<T>::swap(int a, int b) {
+    if (!head || !head->next || a == b || a>Size || b>Size)
+        return;
+
+    int i = 1, j = 1;
+    Node* first = head, *second = head;
+
+    while (i != a) {
+        i++;
+        first = first->next;
+    }
+    while(j != b) {
+        j++;
+        second = second->next;
+    }
+
+    T temp = first->data;
+    first->data = second->data;
+    second->data = temp;
+}
+
+template<typename T>
 void LinkedList<T>::clear() {
     while(head)
     {
@@ -159,7 +215,7 @@ bool LinkedList<T>::empty() {
 }
 
 template<typename T>
-Node *LinkedList<T>::bubble_sort(LinkedList::Node *headr) {
-
+void LinkedList<T>::bubble_sort(bool (*comparator)(T, T)) {
+    head = bubble_sort(head, comparator);
 }
 
