@@ -1,7 +1,7 @@
 //
 // Created by 1 on 22.09.2022.
 //
-#include <functional>
+#include <iostream>
 
 template <typename T>
 bool bigger (T a, T b)
@@ -21,6 +21,10 @@ private:
     public:
         T data;
         Node* next;
+        Node()
+        {
+            this->next = nullptr;
+        }
         Node(T data, Node* ptr = nullptr){
             this->data = data;
             this->next = ptr;
@@ -30,6 +34,7 @@ private:
     int Size;
 
 private:
+    ///Bubble sort
     Node *bubble_sort(Node *headr, bool (*comparator)(T, T))
     {
         Node *curr = headr;
@@ -52,8 +57,198 @@ private:
         return headr;
     }
 
+    ///Insertion sort
+    Node *insertion_sort(Node *headr, bool (*comparator)(T, T))
+    {
+        Node *ans = new Node;
+        Node *curr = headr;
+
+        while (curr)
+        {
+            Node *ins = new Node(curr->data);
+            Node *temp = ans->next;
+            Node *prev_to_temp = nullptr;
+
+            if (!temp)
+            {
+                ans->next = ins;
+            }
+            else
+            {
+                while(temp && comparator(temp->data, ins->data))
+                {
+                    prev_to_temp = temp;
+                    temp = temp->next;
+                }
+
+                if (prev_to_temp) {
+                    prev_to_temp->next = ins;
+                    ins->next = temp;
+                }
+                else
+                {
+                    ans->next = ins;
+                    ins->next = temp;
+                }
+            }
+            curr = curr->next;
+        }
+
+        return ans->next;
+
+    }
+
+    ///Merge sort
+    Node *find_mid(Node *headr)
+    {
+        Node *slow = headr;
+        Node *fast = headr->next;
+
+        while(fast != nullptr && fast->next != nullptr)
+        {
+            slow = slow->next;
+            fast = fast->next;
+            fast = fast->next;
+        }
+
+        return  slow;
+    }
+
+    Node *merger(Node *left, Node *right, bool (*comparator)(T, T))
+    {
+        if (!left)
+            return right;
+        if(!right)
+            return left;
+
+        Node *newHead = new Node;
+        Node *temp = newHead;
+
+        while(left && right)
+        {
+            if (comparator(left->data, right->data))
+            {
+                temp->next = left;
+                left = left->next;
+            }
+            else
+            {
+                temp->next = right;
+                right = right->next;
+            }
+
+            temp = temp->next;
+        }
+
+        while(left)
+        {
+            temp->next = left;
+            left = left->next;
+            temp = temp->next;
+        }
+
+        while(right)
+        {
+            temp->next = right;
+            right = right->next;
+            temp = temp->next;
+        }
+
+        return newHead->next;
+
+    }
+
+    Node *merge_sort(Node *headr, bool (*comparator)(T, T)) {
+
+
+        if (!headr || !headr->next)
+            return headr;
+
+        Node *left = headr;
+        Node *mid = find_mid(headr);
+        Node *right = mid->next;
+
+        mid->next = nullptr;
+
+        left = merge_sort(left, comparator);
+        right = merge_sort(right, comparator);
+
+        headr = merger(left, right, comparator);
+        return headr;
+    }
+
+    ///Quick sort
+
+    Node *partition(Node *headr, bool (*comparator)(T, T)){
+        Node *pivot = headr;
+        while (pivot->next)
+            pivot = pivot->next;
+
+        Node *lesser = headr;
+        Node *higher = headr;
+        int i = 0, j = 0;
+
+        while(lesser->next)
+        {
+            if (!comparator(lesser->data, pivot->data))
+            {
+                lesser = lesser->next;
+                i++;
+            }
+            else
+            {
+                headr = swap(i, j);
+
+                higher = higher->next;
+                lesser = lesser->next;
+                i++; j++;
+            }
+        }
+
+        headr = swap(headr, higher, lesser);
+        return headr;
+    }
+
+    Node *quick_sort(Node *headr, bool (*comparator)(T, T)) {
+        if (!headr || !headr->next)
+            return headr;
+
+        Node *pivot = headr;
+        while (pivot->next)
+            pivot = pivot->next;
+
+        headr = partition(headr, comparator);
+
+        Node *temp = headr;
+        while (temp->next != pivot && temp != pivot)
+            temp = temp->next;
+        if (pivot != temp)
+            pivot->next = temp->next->next;
+        else {
+            pivot->next = temp->next;
+        }
+
+        Node *left = headr;
+        Node *right = pivot->next;
+        temp->next = nullptr;
+
+        left = quick_sort(left, comparator);
+        right = quick_sort(right, comparator);
+
+        Node *temp2 = left;
+        while(temp2->next)
+            temp2 = temp2->next;
+        temp2->next = pivot;
+        pivot->next = right;
+
+        headr = left;
+        return headr;
+    }
+
+
 public:
     LinkedList();
+    T& operator[](int i);
     void push_back(T data);
     void push_front(T data);
     void pop_back();
@@ -65,16 +260,28 @@ public:
     int size();
     bool empty();
 
-    void merge_sort();
-    void insertion_sort();
-    void quick_sort();
-    void bubble_sort(bool (*comparator)(T, T));
+    void merge_sort( bool (*comparator)(T, T) = &lesser);
+    void insertion_sort(bool (*comparator)(T, T) = &lesser);
+    void quick_sort(bool (*comparator)(T, T) = &lesser);
+    void bubble_sort(bool (*comparator)(T, T) = &lesser);
 };
 
 template <typename T>
 LinkedList<T>::LinkedList() {
 head = nullptr;
 Size = 0;
+}
+
+template <typename T>
+T& LinkedList<T>::operator[](int i) {
+    int j = 1;
+    Node *temp = head;
+    while(j<i)
+    {
+        temp = temp->next;
+        j++;
+    }
+    return temp->data;
 }
 
 template <typename T>
@@ -217,5 +424,20 @@ bool LinkedList<T>::empty() {
 template<typename T>
 void LinkedList<T>::bubble_sort(bool (*comparator)(T, T)) {
     head = bubble_sort(head, comparator);
+}
+
+template<typename T>
+void LinkedList<T>::insertion_sort(bool (*comparator)(T, T)) {
+    head = insertion_sort(head, comparator);
+}
+
+template<typename T>
+void LinkedList<T>::merge_sort(bool (*comparator)(T, T)) {
+    head = merge_sort(head, comparator);
+}
+
+template<typename T>
+void LinkedList<T>::quick_sort(bool (*comparator)(T, T)) {
+    head = merge_sort(head, comparator);
 }
 
