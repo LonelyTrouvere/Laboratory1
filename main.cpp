@@ -18,21 +18,16 @@ bool cmp(Person a, Person b)
 
 int main() {
 
-LinkedList<Person>list;
+LinkedList<float>list;
 
-     for (int i=0; i<4; i++)
-     {
-         int a,b;
-         std::cin>>a>>b;
-         Person c = {a,b};
-         list.push_back(c);
-     }
+     list.push_back(0.897);
+    list.push_back(0.565);
+    list.push_back(0.656);
+    list.push_back(0.3234);
+    list.push_back(0.665);
+    list.push_back(0.3434);
 
-     list.quick_sort(cmp);
-
-    for (int i=1; i<5; i++)
-    {
-        std::cout<<list[i].age<<list[i].job<<'\n';
-    }
+    list.bucket_sort();
+    list.print();
 
 }

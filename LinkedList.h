@@ -32,6 +32,10 @@ private:
     };
     Node* head;
     int Size;
+    Node *front()
+    {
+        return head;
+    }
 
 private:
     ///Bubble sort
@@ -245,6 +249,40 @@ private:
         return headr;
     }
 
+    ///Bucket sort
+    Node *bucket_sort(Node *headr)
+    {
+        if (!headr || !headr->next)
+            return headr;
+
+        LinkedList <T> bucket[Size];
+        Node *temp = head;
+        while(temp)
+        {
+            int bucketI = Size*temp->data;
+            bucket[bucketI].push_back(temp->data);
+            temp = temp->next;
+        }
+        for (int i = 0; i<Size; i++) {
+            bucket[i].insertion_sort();
+        }
+
+        int i = 0;
+        while (bucket[i].empty() && i<Size)
+            i++;
+
+        headr = bucket[i].front();
+        temp = headr;
+
+        for (int j=i+1; j<Size; j++)
+        {
+            while (temp->next)
+                temp = temp->next;
+            temp->next = bucket[j].front();
+        }
+        return headr;
+    }
+
 
 public:
     LinkedList();
@@ -264,6 +302,7 @@ public:
     void insertion_sort(bool (*comparator)(T, T) = &lesser);
     void quick_sort(bool (*comparator)(T, T) = &lesser);
     void bubble_sort(bool (*comparator)(T, T) = &lesser);
+    void bucket_sort();
 };
 
 template <typename T>
@@ -441,3 +480,7 @@ void LinkedList<T>::quick_sort(bool (*comparator)(T, T)) {
     head = merge_sort(head, comparator);
 }
 
+template<typename T>
+void LinkedList<T>::bucket_sort() {
+    head = bucket_sort(head);
+}
