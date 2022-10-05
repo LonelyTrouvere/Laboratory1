@@ -29,7 +29,7 @@ LinkedList<int>list;
     list.push_back(2);
     list.push_back(66);
 
-    list.selection_sort();
+    list.selection_sort(&bigger);
     list.print();
 
 }

@@ -331,12 +331,12 @@ private:
         {
             int change = i;
             Node *check = temp->next;
-            T MINData = temp->data;
+            T Data = temp->data;
             while (check)
             {
-                if (check->data < MINData)
+                if (!comparator(Data, check->data))
                 {
-                    MINData = check->data;
+                    Data = check->data;
                     change = j;
                 }
                 j++;
