@@ -201,7 +201,7 @@ private:
             }
             else
             {
-                headr = swap(i, j);
+                swap(i, j);
 
                 higher = higher->next;
                 lesser = lesser->next;
@@ -209,7 +209,7 @@ private:
             }
         }
 
-        headr = swap(headr, higher, lesser);
+        swap(i, j);
         return headr;
     }
 
@@ -287,15 +287,15 @@ private:
     Node *radix_sort(Node *headr)
     {
         Node *temp = headr->next;
-        T MData = headr->data;
+        T MAXData = headr->data;
         while (temp)
         {
-            if (MData < temp->data)
-                MData = temp->data;
+            if (MAXData < temp->data)
+                MAXData = temp->data;
             temp = temp->next;
         }
 
-        for (int exp = 1; MData/exp > 0; exp *= 10)
+        for (int exp = 1; MAXData/exp > 0; exp *= 10)
         {
             LinkedList<T> count[10];
             temp = headr;
@@ -322,6 +322,34 @@ private:
         return headr;
     }
 
+    ///Selection sort
+    Node *selection_sort(Node *headr, bool (*comparator)(T, T))
+    {
+        Node *temp = headr;
+        int i=1, j=2;
+        while (temp->next)
+        {
+            int change = i;
+            Node *check = temp->next;
+            T MINData = temp->data;
+            while (check)
+            {
+                if (check->data < MINData)
+                {
+                    MINData = check->data;
+                    change = j;
+                }
+                j++;
+                check = check->next;
+            }
+            swap(i, change);
+            temp = temp->next;
+            i++;
+            j = i+1;
+        }
+        return headr;
+    }
+
 
 public:
     LinkedList();
@@ -340,6 +368,7 @@ public:
     void merge_sort( bool (*comparator)(T, T) = &lesser);
     void insertion_sort(bool (*comparator)(T, T) = &lesser);
     void quick_sort(bool (*comparator)(T, T) = &lesser);
+    void selection_sort(bool (*comparator)(T, T) = &lesser);
     void bubble_sort(bool (*comparator)(T, T) = &lesser);
     void bucket_sort();
     void radix_sort();
@@ -517,7 +546,12 @@ void LinkedList<T>::merge_sort(bool (*comparator)(T, T)) {
 
 template<typename T>
 void LinkedList<T>::quick_sort(bool (*comparator)(T, T)) {
-    head = merge_sort(head, comparator);
+    head = quick_sort(head, comparator);
+}
+
+template<typename T>
+void LinkedList<T>::selection_sort(bool (*comparator)(T, T)) {
+    head = selection_sort(head, comparator);
 }
 
 template<typename T>
