@@ -18,16 +18,18 @@ bool cmp(Person a, Person b)
 
 int main() {
 
-LinkedList<float>list;
+LinkedList<int>list;
 
-     list.push_back(0.897);
-    list.push_back(0.565);
-    list.push_back(0.656);
-    list.push_back(0.3234);
-    list.push_back(0.665);
-    list.push_back(0.3434);
+    list.push_back(170);
+    list.push_back(45);
+    list.push_back(75);
+    list.push_back(90);
+    list.push_back(802);
+    list.push_back(24);
+    list.push_back(2);
+    list.push_back(66);
 
-    list.bucket_sort();
+    list.radix_sort();
     list.print();
 
 }

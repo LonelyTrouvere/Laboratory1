@@ -283,6 +283,45 @@ private:
         return headr;
     }
 
+    ///Radix sort
+    Node *radix_sort(Node *headr)
+    {
+        Node *temp = headr->next;
+        T MData = headr->data;
+        while (temp)
+        {
+            if (MData < temp->data)
+                MData = temp->data;
+            temp = temp->next;
+        }
+
+        for (int exp = 1; MData/exp > 0; exp *= 10)
+        {
+            LinkedList<T> count[10];
+            temp = headr;
+            while(temp) {
+                count[temp->data / exp % 10].push_back(temp->data);
+                temp = temp->next;
+            }
+
+            int i = 0;
+            while (count[i].empty() && i<10)
+                i++;
+
+            headr = count[i].front();
+            temp = headr;
+
+            for (int j=i+1; j<10; j++)
+            {
+                while (temp->next)
+                    temp = temp->next;
+                temp->next = count[j].front();
+            }
+
+        }
+        return headr;
+    }
+
 
 public:
     LinkedList();
@@ -303,6 +342,7 @@ public:
     void quick_sort(bool (*comparator)(T, T) = &lesser);
     void bubble_sort(bool (*comparator)(T, T) = &lesser);
     void bucket_sort();
+    void radix_sort();
 };
 
 template <typename T>
@@ -483,4 +523,9 @@ void LinkedList<T>::quick_sort(bool (*comparator)(T, T)) {
 template<typename T>
 void LinkedList<T>::bucket_sort() {
     head = bucket_sort(head);
+}
+
+template <typename T>
+void LinkedList<T>::radix_sort() {
+    head = radix_sort(head);
 }
