@@ -1,6 +1,7 @@
 #include <iostream>
 #include<string>
 #include "LinkedList.h"
+#include "ArrayList.h"
 
 struct Person
 {
@@ -18,18 +19,15 @@ bool cmp(Person a, Person b)
 
 int main() {
 
-LinkedList<int>list;
+ArrayList<int>list;
 
-    list.push_back(170);
-    list.push_back(45);
-    list.push_back(75);
-    list.push_back(90);
-    list.push_back(802);
-    list.push_back(24);
-    list.push_back(2);
-    list.push_back(66);
+    for (int i = 0; i<10; i++)
+    {
+        list.push_back(i);
+        //std::cout<<list.Msize()<<'\n';
+    }
 
-    list.selection_sort(&bigger);
+    std::swap(list[1], list[5]);
     list.print();
 
 }

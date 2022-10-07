@@ -353,6 +353,7 @@ private:
 
 public:
     LinkedList();
+    ~LinkedList();
     T& operator[](int i);
     void push_back(T data);
     void push_front(T data);
@@ -378,6 +379,13 @@ template <typename T>
 LinkedList<T>::LinkedList() {
 head = nullptr;
 Size = 0;
+}
+
+template<typename T>
+LinkedList<T>::~LinkedList() {
+    while(head->next)
+        delete head->next;
+    delete head;
 }
 
 template <typename T>
