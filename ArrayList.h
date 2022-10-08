@@ -21,6 +21,10 @@ public:
     bool empty();
     void print();
     int Msize(); /// to be deleted
+
+    void bubble_sort(bool (*comparator)(T, T) = &lesser);
+    void selection_sort(bool (*comparator)(T, T) = &lesser);
+    void insertion_sort(bool (*comparator)(T, T) = &lesser);
 };
 
 template<typename T>
@@ -120,3 +124,48 @@ void ArrayList<T>::print() {
     for (int i=0; i<Size; i++)
         std::cout<<arr[i]<<' ';
 }
+
+///BUBBLE SORT
+template<typename T>
+void ArrayList<T>::bubble_sort(bool (*comparator)(T, T)) {
+
+    for (int i = 0; i<Size; i++) {
+        for (int j = 0; j < Size - i - 1; j++) {
+            if (!comparator(arr[j], arr[j + 1]))
+                std::swap(arr[j], arr[j + 1]);
+        }
+    }
+
+}
+
+template<typename T>
+void ArrayList<T>::selection_sort(bool (*comparator)(T, T)) {
+
+    for (int i = 0; i<Size-1; i++)
+    {
+        T cmpData = arr[i];
+        int x = i;
+        for (int j = i+1; j<Size; j++)
+            if (!comparator(cmpData, arr[j])) {
+                cmpData = arr[j];
+                x = j;
+            }
+        std::swap(arr[i], arr[x]);
+    }
+
+}
+
+template<typename T>
+void ArrayList<T>::insertion_sort(bool (*comparator)(T, T)) {
+    for (int i = 1; i < Size; i++)
+    {
+        int j = i;
+
+        while (j > 0 && comparator(arr[j], arr[j-1]))
+        {
+            std::swap(arr[j-1], arr[j]);
+            j--;
+        }
+    }
+}
+

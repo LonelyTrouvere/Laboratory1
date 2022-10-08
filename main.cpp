@@ -21,13 +21,14 @@ int main() {
 
 ArrayList<int>list;
 
-    for (int i = 0; i<10; i++)
-    {
-        list.push_back(i);
-        //std::cout<<list.Msize()<<'\n';
-    }
+    list.push_back(64);
+    list.push_back(25);
+    list.push_back(12);
+    list.push_back(22);
+    list.push_back(11);
+    list.push_back(-5);
 
-    std::swap(list[1], list[5]);
+    list.insertion_sort(&bigger);
     list.print();
 
 }
