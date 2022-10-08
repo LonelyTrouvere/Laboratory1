@@ -26,9 +26,8 @@ ArrayList<int>list;
     list.push_back(12);
     list.push_back(22);
     list.push_back(11);
-    list.push_back(-5);
 
-    list.insertion_sort(&bigger);
+    list.radix_sort();
     list.print();
 
 }

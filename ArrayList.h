@@ -9,6 +9,12 @@ private:
 
     void append();
 
+    void merge_sort(T arr_s[], int begin, int end, bool (*comparator)(T, T));
+    void merger(T arr_s[], int left, int mid, int right, bool (*comparator)(T, T));
+
+    void quick_sort(T arr_s[], int begin, int end, bool (*comparator)(T, T));
+    int partition(T arr_s[], int begin, int end, bool (*comparator)(T, T));
+
 public:
     ArrayList();
     T& operator[](int i);
@@ -25,6 +31,11 @@ public:
     void bubble_sort(bool (*comparator)(T, T) = &lesser);
     void selection_sort(bool (*comparator)(T, T) = &lesser);
     void insertion_sort(bool (*comparator)(T, T) = &lesser);
+    void merge_sort(bool (*comparator)(T, T) = &lesser);
+    void quick_sort(bool (*comparator)(T, T) = &lesser);
+
+    void bucket_sort();
+    void radix_sort();
 };
 
 template<typename T>
@@ -169,3 +180,144 @@ void ArrayList<T>::insertion_sort(bool (*comparator)(T, T)) {
     }
 }
 
+template<typename T>
+void ArrayList<T>::merge_sort(bool (*comparator)(T, T)) {
+     merge_sort(arr, 0, Size-1, comparator);
+}
+
+template<typename T>
+void ArrayList<T>::merger(T arr_s[], int left, int mid, int right, bool (*comparator)(T, T)) {
+
+    int left_s = mid - left + 1, right_s = right - mid;
+    T *leftArr = new T[left_s];
+    T *rightArr = new T[right_s];
+
+    for (int i=0; i<left_s; i++)
+        leftArr[i] = arr_s[left+i];
+
+    for (int i=0; i<right_s; i++)
+        rightArr[i] = arr_s[mid+1+i];
+
+    int i=0, j=0, x=left;
+    while (i<left_s && j<right_s)
+    {
+        if (comparator(leftArr[i], rightArr[j]))
+        {
+            arr_s[x] = leftArr[i];
+            i++;
+        }
+        else
+        {
+            arr_s[x] = rightArr[j];
+            j++;
+        }
+        x++;
+    }
+
+    while (i<left_s)
+    {
+        arr_s[x] = leftArr[i];
+        i++;
+        x++;
+    }
+
+    while (j<right_s)
+    {
+        arr_s[x] = rightArr[j];
+        j++;
+        x++;
+    }
+    delete []leftArr;
+    delete []rightArr;
+}
+
+template<typename T>
+void ArrayList<T>::merge_sort(T arr_s[], int begin, int end, bool (*comparator)(T, T)) {
+    if(begin>=end) return;
+
+    int mid = begin + (end - begin)/2;
+    merge_sort(arr_s, begin, mid, comparator);
+    merge_sort(arr_s,mid+1, end, comparator);
+
+    merger(arr_s, begin, mid, end, comparator);
+
+}
+
+template<typename T>
+void ArrayList<T>::quick_sort(bool (*comparator)(T, T)) {
+    quick_sort(arr, 0, Size-1, comparator);
+}
+
+template<typename T>
+int ArrayList<T>::partition(T *arr_s, int begin, int end, bool (*comparator)(T, T)) {
+    int pivot = arr_s[end], i = begin-1;
+
+    for (int j=begin; j<end; j++)
+    {
+        if (comparator(arr_s[j], pivot))
+        {
+            i++;
+            std::swap(arr[i], arr[j]);
+        }
+    }
+
+    std::swap(arr[++i], arr[end]);
+    return i;
+}
+
+template<typename T>
+void ArrayList<T>::quick_sort(T *arr_s, int begin, int end, bool (*comparator)(T, T)) {
+    if (begin >= end) return;
+
+    int pivot = partition(arr_s, begin, end, comparator);
+    quick_sort(arr_s, begin, pivot-1, comparator);
+    quick_sort(arr_s, pivot+1, end, comparator);
+
+}
+
+template<typename T>
+void ArrayList<T>::bucket_sort() {
+        ArrayList<float> bucket[Size];
+
+        for (int i=0; i<Size; i++)
+        {
+            int x = Size*arr[i];
+            bucket[x].push_back(arr[i]);
+        }
+
+        for (int i=0; i<Size; i++)
+            bucket[i].insertion_sort();
+
+        int x = 0;
+        for (int i=0; i<Size; i++)
+            for (int j=0; j<bucket[i].size(); j++)
+            {
+                arr[x] = bucket[i][j];
+                x++;
+            }
+
+}
+
+template<typename T>
+void ArrayList<T>::radix_sort() {
+
+    T ma;
+
+    for (int i=0; i<Size; i++)
+        if (arr[i]>ma) ma = arr[i];
+
+    for (int exp = 1; ma/exp>0; exp*=10) {
+        ArrayList<T> num[10];
+
+        for (int i = 0; i < Size; i++)
+            num[arr[i] / exp % 10].push_back(arr[i]);
+
+        int x = 0;
+        for (int i = 0; i < 10; i++)
+            for (int j = 0; j < num[i].size(); j++)
+            {
+                arr[x] = num[i][j];
+                x++;
+            }
+    }
+}
