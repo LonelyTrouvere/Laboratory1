@@ -1,5 +1,16 @@
 #include <iostream>
 
+template <typename T>
+bool bigger (T a, T b)
+{
+    return a>b;
+}
+template <typename T>
+bool lesser(T a, T b)
+{
+    return a<b;
+}
+
 template<typename T>
 class ArrayList{
 private:
@@ -26,7 +37,6 @@ public:
     void clear();
     bool empty();
     void print();
-    int Msize(); /// to be deleted
 
     void bubble_sort(bool (*comparator)(T, T) = &lesser);
     void selection_sort(bool (*comparator)(T, T) = &lesser);
@@ -99,7 +109,8 @@ void ArrayList<T>::append() {
     MAX_SIZE*=2;
     T *newArr = new T[MAX_SIZE];
 
-    memcpy( newArr, arr, (Size-1) * sizeof(int) );
+    for (int i=0; i<Size-1; i++)
+        newArr[i] = arr[i];
 
     delete [] arr;
     arr = newArr;
@@ -123,11 +134,6 @@ bool ArrayList<T>::empty() {
         return false;
     else
         return true;
-}
-
-template<typename T>
-int ArrayList<T>::Msize() {
-    return MAX_SIZE;
 }
 
 template<typename T>
