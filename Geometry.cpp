@@ -83,11 +83,39 @@ bool Figure::isRegular() {
 }
 
 bool Figure::isIsosceles() {
-    return Triangle::isosceles(figure);
+    return Triangle::isosceles(*this);
+}
+
+bool Figure::isRect() {
+    return Triangle::rectangl(*this);
+}
+
+bool Figure::isAcute() {
+    return Triangle::acuteangl(*this);
+}
+
+bool Figure::isObtuse() {
+    return Triangle::obtuseangl(*this);
+}
+
+std::pair<double, double> Figure::getOrthocenter() {
+    return Triangle::orthocenter(*this);
+}
+
+std::pair<double, double> Figure::getMasscenter() {
+    return Triangle::masscenter(*this);
+}
+
+std::pair<double, double> Figure::getIncenter() {
+    return Triangle::incenter(*this);
+}
+
+std::pair<double, double> Figure::getCircumsus() {
+    return Triangle::circumscribedcenter(*this);
 }
 
 /// TRIANGLE CLASS
-bool Triangle::isosceles(ArrayList<std::pair<double, double>> f) {
+bool Triangle::isosceles(Figure f) {
     if (f.size() != 3) return false;
     double a = Figure::distance(f[0], f[1]),
     b = Figure::distance(f[1], f[2]),
@@ -99,6 +127,104 @@ bool Triangle::isosceles(ArrayList<std::pair<double, double>> f) {
         return false;
 }
 
-int Triangle::angleInfo(ArrayList<std::pair<double, double>> f) {
+bool Triangle::rectangl(Figure f) {
 
+    if (f.size() != 3) return false;
+
+    double phi1 = Figure::angle(f[0], f[1], f[2]),
+    phi2 = Figure::angle(f[1], f[2], f[0]),
+    phi3 = Figure::angle(f[2], f[0], f[1]);
+
+    const double HALF_PI = M_PI/2;
+
+    if (phi1 == HALF_PI || phi2 == HALF_PI || phi3 == HALF_PI)
+        return true;
+
+    return false;
+}
+
+bool Triangle::obtuseangl(Figure f) {
+    if (f.size() != 3) return false;
+
+    double phi1 = Figure::angle(f[0], f[1], f[2]),
+            phi2 = Figure::angle(f[1], f[2], f[0]),
+            phi3 = Figure::angle(f[2], f[0], f[1]);
+
+    const double HALF_PI = M_PI/2;
+
+    if (phi1 > HALF_PI || phi2 > HALF_PI || phi3 > HALF_PI)
+        return true;
+
+    return false;
+}
+
+bool Triangle::acuteangl(Figure f) {
+    if (f.size() != 3) return false;
+
+    double phi1 = Figure::angle(f[0], f[1], f[2]),
+            phi2 = Figure::angle(f[1], f[2], f[0]),
+            phi3 = Figure::angle(f[2], f[0], f[1]);
+
+    const double HALF_PI = M_PI/2;
+
+    if (phi1 < HALF_PI && phi2 < HALF_PI && phi3 < HALF_PI)
+        return true;
+
+    return false;
+}
+
+std::pair<double, double> Triangle::orthocenter(Figure f) {
+    if (Figure::angle(f[0], f[1], f[2]) == M_PI/2) return f[1];
+    if (Figure::angle(f[1], f[2], f[0]) == M_PI/2) return f[2];
+    if (Figure::angle(f[2], f[0], f[1]) == M_PI/2) return f[0];
+
+    double m3 = -((f[1].first - f[0].first)/(f[1].second - f[0].second)),
+    m1 = -((f[1].first - f[2].first)/(f[1].second - f[2].second));
+
+    double x = (m3*f[2].first - f[2].second - m1*f[0].first + f[0].second)/(m3-m1);
+    double y = m3*x -m3*f[2].first + f[2].second;
+
+    return {x,y};
+}
+
+std::pair<double, double> Triangle::masscenter(Figure f) {
+
+    double c1 = (f[2].second + f[1].second)/2;
+    if (c1 - f[0].second == 0)
+        return {f[0].first + (2*f[0].first)/3, f[0].second};
+
+    double c2 = (f[0].second + f[1].second)/2;
+    if (c2 - f[2].second == 0)
+        return {f[2].first + (2*f[0].first)/3, f[2].second};
+
+    double l1 = (f[2].first + f[1].first)/2 - f[0].first,
+    m1 = (f[2].second + f[1].second)/2 - f[0].second,
+    l2 = (f[0].first + f[1].first)/2 - f[2].first,
+    m2 = (f[0].second + f[1].second)/2 - f[2].second;
+
+    double x = (f[0].first*(m1/l1) - f[0].second - f[2].first*(m2/l2) + f[2].second)/(m1/l1 - m2/l2);
+    double y = x*(m1/l1) - f[0].first*(m1/l1) + f[0].second;
+
+    return {x,y};
+}
+
+std::pair<double, double> Triangle::incenter(Figure f) {
+    double a = Figure::distance(f[2], f[1]),
+    b = Figure::distance(f[0], f[2]),
+    c = Figure::distance(f[1], f[0]),
+    p = a+b+c;
+
+    double x = (f[0].first*a + f[1].first*b + f[2].first*c)/p,
+    y = (f[0].second*a + f[1].second*b + f[2].second*c)/p;
+
+    return {x,y};
+}
+
+std::pair<double, double> Triangle::circumscribedcenter(Figure f) {
+
+    double k = (2*(f[2].second*f[2].second - f[1].second*f[1].second)*(f[1].first-f[0].first) - 2*(f[1].second*f[1].second - f[0].second*f[0].second)*(f[2].first - f[1].first))
+            /(4*((f[2].second -f[1].second)*(f[1].first - f[0].first) - (f[1].second - f[0].second)*(f[2].first - f[1].first))),
+            h = (f[1].second*f[1].second - f[0].second*f[0].second - k*2*(f[1].second - f[0].second))/(2*(f[1].first - f[0].first));
+
+    return {h,k};
 }
