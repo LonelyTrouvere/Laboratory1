@@ -114,6 +114,10 @@ std::pair<double, double> Figure::getCircumsus() {
     return Triangle::circumscribedcenter(*this);
 }
 
+bool Figure::isParallelogram() {
+    return  Quadrangle::parallelogram(*this);
+}
+
 /// TRIANGLE CLASS
 bool Triangle::isosceles(Figure f) {
     if (f.size() != 3) return false;
@@ -222,9 +226,96 @@ std::pair<double, double> Triangle::incenter(Figure f) {
 
 std::pair<double, double> Triangle::circumscribedcenter(Figure f) {
 
-    double k = (2*(f[2].second*f[2].second - f[1].second*f[1].second)*(f[1].first-f[0].first) - 2*(f[1].second*f[1].second - f[0].second*f[0].second)*(f[2].first - f[1].first))
-            /(4*((f[2].second -f[1].second)*(f[1].first - f[0].first) - (f[1].second - f[0].second)*(f[2].first - f[1].first))),
-            h = (f[1].second*f[1].second - f[0].second*f[0].second - k*2*(f[1].second - f[0].second))/(2*(f[1].first - f[0].first));
+    double k = ((f[1].first*f[1].first - f[2].first*f[2].first + f[1].second*f[1].second - f[2].second*f[2].second)*(f[1].first - f[0].first) -
+            (f[1].first*f[1].first - f[0].first*f[0].first + f[1].second*f[1].second - f[0].second*f[0].second)*(f[1].first - f[2].first))/
+            (2*((f[1].second - f[2].second)*(f[1].first - f[0].first) - (f[1].second - f[0].second)*(f[1].first - f[2].first))),
 
-    return {h,k};
+            h = (f[1].first*f[1].first - f[0].first*f[0].first + f[1].second*f[1].second - f[0].second*f[0].second -
+                    k*2*(f[1].second - f[0].second))/
+            (2*(f[1].first - f[0].first));
+
+    return {h, k};
+}
+
+/// QUADRANGLE CLASS
+
+bool Quadrangle::parallelogram(Figure f) {
+    double a = distance(f[0], f[1]),
+    b = distance(f[1], f[2]),
+    c = distance(f[2], f[3]),
+    d = distance(f[3], f[0]);
+
+    if (a == c && b == d)
+        return true;
+
+    return false;
+}
+
+bool Quadrangle::diamond(Figure f) {
+
+    double a = distance(f[0], f[1]),
+            b = distance(f[1], f[2]),
+            c = distance(f[2], f[3]),
+            d = distance(f[3], f[0]);
+
+    if (a == b == c == d)
+        return true;
+
+    return false;
+
+}
+
+bool Quadrangle::rectangle(Figure f) {
+
+    double ang = angle(f[1], f[2], f[3]);
+
+    if (parallelogram(f) && ang == M_PI/2)
+        return true;
+
+    return false;
+
+}
+
+bool Quadrangle::square(Figure f) {
+    if (rectangle(f) && diamond(f))
+        return true;
+    return false;
+}
+
+bool Quadrangle::trapeze(Figure f) {
+    std::pair<double, double> a = {f[1].first - f[0].first, f[1].second - f[0].second},
+    b = {f[2].first - f[1].first, f[2].second - f[1].second},
+    c = {f[2].first - f[3].first, f[2].second - f[3].second},
+    d = {f[3].first - f[0].first, f[3].second - f[0].second};
+
+    if ((fabs(a.first/c.first) == fabs(a.second/c.second) && fabs(b.first/d.first) != fabs(b.second/d.second)) ||
+    (fabs(a.first/c.first) != fabs(a.second/c.second) && fabs(b.first/d.first) == fabs(b.second/d.second)))
+    {
+        return true;
+    }
+
+    return false;
+}
+
+bool Quadrangle::rectTrapeze(Figure f) {
+    double phi1 = angle(f[0], f[1], f[2]),
+    phi2 = angle[f[1], f[2], f[3]],
+    phi3 = angle(f[2], f[3], f[0]),
+
+    if (trapeze(f) && (phi1 == M_PI/2 || phi2 == M_PI/2 || phi3 == M_PI/2 ))
+        return true;
+
+    return false;
+}
+
+bool Quadrangle::isoscelesTrapeze(Figure f) {
+    double a = distance(f[0], f[1]),
+            b = distance(f[1], f[2]),
+            c = distance(f[2], f[3]),
+            d = distance(f[3], f[0]);
+
+    if (trapeze(f) && (a == c || b == d))
+        return true;
+
+    return false;
 }

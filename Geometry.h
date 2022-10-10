@@ -14,6 +14,7 @@ public:
     double perimeter();
     double area();
     bool isRegular();
+
     bool isIsosceles();
     bool isRect();
     bool isAcute();
@@ -22,6 +23,9 @@ public:
     std::pair<double, double> getMasscenter();
     std::pair<double, double>getIncenter();
     std::pair<double, double>getCircumsus();
+
+    bool isParallelogram();
+
     int size();
 
 };
@@ -40,3 +44,15 @@ private:
     static std::pair<double, double> circumscribedcenter(Figure f);
 };
 
+class Quadrangle: protected  Figure
+{
+    friend  class Figure;
+private:
+    static bool parallelogram(Figure f);
+    static bool diamond(Figure f);
+    static bool rectangle(Figure f);
+    static bool square(Figure f);
+    static bool trapeze(Figure f);
+    static bool rectTrapeze(Figure f);
+    static bool isoscelesTrapeze(Figure f);
+};
