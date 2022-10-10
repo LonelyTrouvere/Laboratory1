@@ -25,6 +25,13 @@ public:
     std::pair<double, double>getCircumsus();
 
     bool isParallelogram();
+    bool isDiamond();
+    bool isRectangle();
+    bool isSquare();
+    bool isTrapeze();
+    bool isRectangleTrapeze();
+    bool isIsoscelesTrapeze();
+    std::pair<double, double> diagonalIntersectionPoint();
 
     int size();
 
@@ -55,4 +62,5 @@ private:
     static bool trapeze(Figure f);
     static bool rectTrapeze(Figure f);
     static bool isoscelesTrapeze(Figure f);
+    static std::pair<double, double> diagonalIntersect(Figure f);
 };

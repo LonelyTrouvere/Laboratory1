@@ -118,6 +118,34 @@ bool Figure::isParallelogram() {
     return  Quadrangle::parallelogram(*this);
 }
 
+bool Figure::isDiamond() {
+    return Quadrangle::diamond(*this);
+}
+
+bool Figure::isRectangle() {
+    return Quadrangle::rectangle(*this);
+}
+
+bool Figure::isSquare() {
+    return Quadrangle::square(*this);
+}
+
+bool Figure::isTrapeze() {
+    return Quadrangle::trapeze(*this);
+}
+
+bool Figure::isRectangleTrapeze() {
+    return Quadrangle::rectTrapeze(*this);
+}
+
+bool Figure::isIsoscelesTrapeze() {
+    return Quadrangle::isoscelesTrapeze(*this);
+}
+
+std::pair<double, double> Figure::diagonalIntersectionPoint() {
+    return Quadrangle::diagonalIntersect(*this);
+}
+
 /// TRIANGLE CLASS
 bool Triangle::isosceles(Figure f) {
     if (f.size() != 3) return false;
@@ -288,6 +316,11 @@ bool Quadrangle::trapeze(Figure f) {
     c = {f[2].first - f[3].first, f[2].second - f[3].second},
     d = {f[3].first - f[0].first, f[3].second - f[0].second};
 
+    if (a.first == c.first && c.first == 0) {a.first = a.second; c.first = c.second;}
+    if (b.first == d.first && d.first == 0) {b.first = b.second; d.first = d.second;}
+    if (a.second == c.second && c.second == 0) {a.second = a.first; c.second = c.first;}
+    if (b.second == d.second && d.second == 0) {b.second = b.first; d.second = d.first;}
+
     if ((fabs(a.first/c.first) == fabs(a.second/c.second) && fabs(b.first/d.first) != fabs(b.second/d.second)) ||
     (fabs(a.first/c.first) != fabs(a.second/c.second) && fabs(b.first/d.first) == fabs(b.second/d.second)))
     {
@@ -299,8 +332,8 @@ bool Quadrangle::trapeze(Figure f) {
 
 bool Quadrangle::rectTrapeze(Figure f) {
     double phi1 = angle(f[0], f[1], f[2]),
-    phi2 = angle[f[1], f[2], f[3]],
-    phi3 = angle(f[2], f[3], f[0]),
+    phi2 = angle(f[1], f[2], f[3]),
+    phi3 = angle(f[2], f[3], f[0]);
 
     if (trapeze(f) && (phi1 == M_PI/2 || phi2 == M_PI/2 || phi3 == M_PI/2 ))
         return true;
@@ -318,4 +351,33 @@ bool Quadrangle::isoscelesTrapeze(Figure f) {
         return true;
 
     return false;
+}
+
+std::pair<double, double> Quadrangle::diagonalIntersect(Figure f) {
+
+    double x = NAN, y = NAN;
+
+    if (f[2].first == f[0].first) x = f[0].first;
+    if (f[3].first == f[1].first) x = f[1].first;
+    if (f[2].second == f[0].second) y = f[0].second;
+    if(f[3].second == f[1].second) y = f[1].second;
+
+    if (isnan(x))
+        x = ((f[1].second * (f[3].first - f[1].first) - f[1].first * (f[3].second - f[1].second)) *
+             (f[2].first - f[0].first) -
+             (f[0].second * (f[2].first - f[0].first) - f[0].first * (f[2].second - f[0].second)) *
+             (f[3].first - f[1].first)) /
+            ((f[2].second - f[0].second) * (f[3].first - f[1].first) -
+             (f[3].second - f[1].second) * (f[2].first - f[0].first));
+
+
+
+    if (isnan(y))
+        y = (x * (f[2].second - f[0].second)) / (f[2].first - f[0].first) +
+            (f[0].second * (f[2].first - f[0].first) - f[0].first * (f[2].second - f[0].second)) /
+            (f[2].first - f[0].first);
+
+
+    return {x,y};
+
 }

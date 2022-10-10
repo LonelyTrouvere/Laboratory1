@@ -4,11 +4,12 @@ int main() {
 
 Figure f;
 
-    f.push_back({2,3});
-    f.push_back({3,4});
-    f.push_back({6,8});
+    f.push_back({0,0});
+    f.push_back({1,5});
+    f.push_back({6,9});
+    f.push_back({5,-3});
 
-   std::pair<double, double> o = f.getCircumsus();
-   std::cout<<o.first<<' '<<o.second;
+   std::pair<double, double> a = f.diagonalIntersectionPoint();
+   std::cout<<a.first<<' '<<a.second;
 
 }
